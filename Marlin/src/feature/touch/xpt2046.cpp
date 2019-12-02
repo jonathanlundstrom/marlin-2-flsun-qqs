@@ -79,7 +79,6 @@ uint8_t XPT2046::read_buttons() {
   if (!isTouched()) return 0; // Fingers must still be on the TS for a valid read.
 
   if (y < 175 || y > 234) return 0;
-
   return WITHIN(x,  14,  77) ? EN_D
        : WITHIN(x,  90, 153) ? EN_A
        : WITHIN(x, 166, 229) ? EN_B

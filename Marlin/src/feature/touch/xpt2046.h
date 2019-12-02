@@ -18,10 +18,16 @@
  */
 #pragma once
 
-#include <stdint.h>
+#define XPT2046_X               0x10
+#define XPT2046_Z1              0x30
+#define XPT2046_Z2              0x40
+#define XPT2046_Y               0x50
 
 // Relies on XPT2046-compatible mode of ADS7843,
 // hence no Z1 / Z2 measurements are possible.
+#define XPT2046_SPI_CLOCK       SPI_CLOCK_DIV2
+
+#define XPT2046_Z1_TRESHHOLD    10
 
 #define XPT2046_DFR_MODE 0x00
 #define XPT2046_SER_MODE 0x04
@@ -34,8 +40,19 @@ enum XPTCoordinate : uint8_t {
   XPT2046_Z2 = 0x40
 };
 
+/* MKS Robin TFT v2.0 */
+#define XPT2046_X_CALIBRATION    12149
+#define XPT2046_X_OFFSET           -35
+#define XPT2046_Y_CALIBRATION    -8746
+#define XPT2046_Y_OFFSET           256
+
+/* MKS Robin TFT v1.1 */
+//#define XPT2046_X_CALIBRATION   -11792
+//#define XPT2046_X_OFFSET           342
+
 #ifndef XPT2046_Z1_THRESHOLD
   #define XPT2046_Z1_THRESHOLD 10
+
 #endif
 
 class XPT2046 {

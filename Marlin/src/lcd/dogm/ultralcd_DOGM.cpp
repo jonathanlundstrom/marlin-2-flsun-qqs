@@ -245,34 +245,26 @@ bool MarlinUI::detected() { return true; }
 // Initialize or re-initialize the LCD
 void MarlinUI::init_lcd() {
 
-  #if PIN_EXISTS(LCD_BACKLIGHT)
-    OUT_WRITE(LCD_BACKLIGHT_PIN, (
-      #if ENABLED(DELAYED_BACKLIGHT_INIT)
-        LOW  // Illuminate after reset
-      #else
-        HIGH // Illuminate right away
-      #endif
-    ));
+  #if PIN_EXISTS(LCD_BACKLIGHT) // Enable LCD backlight
+    OUT_WRITE(LCD_BACKLIGHT_PIN, HIGH);
   #endif
 
   #if EITHER(MKS_12864OLED, MKS_12864OLED_SSD1306)
     SET_OUTPUT(LCD_PINS_DC);
-    #ifndef LCD_RESET_PIN
+    #if !defined(LCD_RESET_PIN)
       #define LCD_RESET_PIN LCD_PINS_RS
     #endif
   #endif
 
   #if PIN_EXISTS(LCD_RESET)
-    // Perform a clean hardware reset with needed delays
-    OUT_WRITE(LCD_RESET_PIN, LOW);
+    OUT_WRITE(LCD_RESET_PIN, LOW); // perform a clean hardware reset
     _delay_ms(5);
-    WRITE(LCD_RESET_PIN, HIGH);
-    _delay_ms(5);
-    u8g.begin();
+    OUT_WRITE(LCD_RESET_PIN, HIGH);
+    _delay_ms(5); // delay to allow the display to initialize
   #endif
 
-  #if PIN_EXISTS(LCD_BACKLIGHT) && ENABLED(DELAYED_BACKLIGHT_INIT)
-    WRITE(LCD_BACKLIGHT_PIN, HIGH);
+  #if PIN_EXISTS(LCD_RESET)
+    u8g.begin();
   #endif
 
   #if HAS_LCD_CONTRAST
@@ -280,11 +272,11 @@ void MarlinUI::init_lcd() {
   #endif
 
   #if ENABLED(LCD_SCREEN_ROT_90)
-    u8g.setRot90();
+    u8g.setRot90();   // Rotate screen by 90°
   #elif ENABLED(LCD_SCREEN_ROT_180)
-    u8g.setRot180();
+    u8g.setRot180();  // Rotate screen by 180°
   #elif ENABLED(LCD_SCREEN_ROT_270)
-    u8g.setRot270();
+    u8g.setRot270();  // Rotate screen by 270°
   #endif
 
   uxg_SetUtf8Fonts(g_fontinfo, COUNT(g_fontinfo));

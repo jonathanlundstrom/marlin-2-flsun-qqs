@@ -59,6 +59,7 @@ bool PersistentStore::write_data(int &pos, const uint8_t *value, size_t size, ui
 
   if (firstWrite) {
     FLASH_Unlock();
+
     status = FLASH_ErasePage(EEPROM_PAGE0_BASE);
     if (status != FLASH_COMPLETE) return true;
     status = FLASH_ErasePage(EEPROM_PAGE1_BASE);
@@ -77,6 +78,7 @@ bool PersistentStore::write_data(int &pos, const uint8_t *value, size_t size, ui
 }
 
 bool PersistentStore::read_data(int &pos, uint8_t* value, const size_t size, uint16_t *crc, const bool writing/*=true*/) {
+
   for (size_t i = 0; i < size; i++) {
     uint8_t v = *(uint16_t *)(EEPROM_PAGE0_BASE + (pos + i) * 2);
     if (writing) value[i] = v;

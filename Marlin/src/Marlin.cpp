@@ -946,7 +946,7 @@ void setup() {
   settings.first_load();
 
   #if ENABLED(TOUCH_BUTTONS)
-    touch.init();
+    //touch.init();
   #endif
 
   #if HAS_M206_COMMAND
