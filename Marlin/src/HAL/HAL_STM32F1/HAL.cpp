@@ -318,6 +318,16 @@ void HAL_adc_init() {
   adc.startConversion();
 }
 
+// TODO
+void PWM_vref_init(void) {
+  HardwareTimer pwmtimer(3);
+  pwmtimer.pause();
+  pwmtimer.setPrescaleFactor(1);
+  pwmtimer.setOverflow(2000);
+  pwmtimer.refresh();
+  pwmtimer.resume();
+}
+
 void HAL_adc_start_conversion(const uint8_t adc_pin) {
   TEMP_PINS pin_index;
   switch (adc_pin) {
